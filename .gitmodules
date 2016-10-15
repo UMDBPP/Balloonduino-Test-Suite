@@ -1,0 +1,3 @@
+[submodule "BalloonduinoTestSuite/CCSDS_Xbee"]
+	path = BalloonduinoTestSuite/CCSDS_Xbee
+	url = https://github.com/UMDBPP/CCSDS_Xbee.git

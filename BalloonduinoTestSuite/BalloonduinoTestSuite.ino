@@ -8,6 +8,9 @@
 #include <Adafruit_BME280.h>
 #include <SD.h>
 #include <Adafruit_ADS1015.h>
+#include "CCSDS_Xbee/CCSDS.h"
+#include "CCSDS_Xbee/ccsds_xbee.h"
+#include "CCSDS_Xbee/ccsds_util.h"
 
 char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
@@ -73,6 +76,19 @@ void setup(void)
   }
   else{
     Serial.println("SD Card detected!");
+  }
+
+  // xbee
+  Serial.println("Beginning xbee init");
+  Serial3.begin(9600);
+  
+  delay(100);
+  int xbeeStatus = InitXBee(0x0015, 0x0B0B, Serial3, true);
+  if(!xbeeStatus) {
+    Serial.println("XBee Initialized!");
+  } else {
+    Serial.print("XBee Failed to Initialize with Error Code: ");
+    Serial.println(xbeeStatus);
   }
 }
 
