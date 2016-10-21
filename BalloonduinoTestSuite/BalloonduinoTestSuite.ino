@@ -11,6 +11,7 @@
 #include "CCSDS_Xbee/CCSDS.h"
 #include "CCSDS_Xbee/ccsds_xbee.h"
 #include "CCSDS_Xbee/ccsds_util.h"
+#include <SSC.h>
 
 char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
@@ -19,10 +20,11 @@ Adafruit_MCP9808 tempsensor = Adafruit_MCP9808();
 RTC_DS1307 rtc;
 Adafruit_BME280 bme;
 Adafruit_ADS1015 ads;
+SSC ssc(0x28, 255);
 
 void setup(void)
 {
-  Serial.begin(9600);
+  Serial.begin(250000);
   Serial.println("Balloonduino Test Suite");
 
   //BNO
@@ -90,6 +92,18 @@ void setup(void)
     Serial.print("XBee Failed to Initialize with Error Code: ");
     Serial.println(xbeeStatus);
   }
+
+   //  set min / max reading and pressure, see datasheet for the values for your 
+  //  sensor
+  ssc.setMinRaw(0);
+  ssc.setMaxRaw(16383);
+  ssc.setMinPressure(0.0);
+  ssc.setMaxPressure(30);
+
+  //  start the sensor
+  Serial.print("SSC start: ");
+  Serial.println(ssc.start());
+  
 }
 
 void loop(void)
@@ -155,6 +169,15 @@ void loop(void)
   Serial.print(", A3: ");
   Serial.println(ads.readADC_SingleEnded(3));
 
+  //  SSC
+  Serial.print("SSC update: ");
+  Serial.print(ssc.update());
+  Serial.print(", pressure: ");
+  Serial.print(ssc.pressure());
+  Serial.print(" PSI, temperature: ");
+  Serial.print(ssc.temperature());
+  Serial.println(" C");
+  
   //MicroSD
   File dataFile = SD.open("test.txt", FILE_WRITE);
 
