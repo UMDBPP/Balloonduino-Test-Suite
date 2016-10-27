@@ -19,7 +19,7 @@ Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x29);
 Adafruit_MCP9808 tempsensor = Adafruit_MCP9808();
 RTC_DS1307 rtc;
 Adafruit_BME280 bme;
-Adafruit_ADS1015 ads;
+Adafruit_ADS1015 ads(0x4A);
 SSC ssc(0x28, 255);
 
 void setup(void)
