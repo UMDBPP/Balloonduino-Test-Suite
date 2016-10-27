@@ -69,6 +69,7 @@ void setup(void)
   }
 
   ads.begin();
+  ads.setGain(GAIN_ONE);
   Serial.println("Initialized ADS1015");
 
   SPI.begin();
@@ -168,6 +169,12 @@ void loop(void)
   Serial.print(ads.readADC_SingleEnded(2));
   Serial.print(", A3: ");
   Serial.println(ads.readADC_SingleEnded(3));
+
+  Serial.print("Batt Voltage: ");
+  Serial.print(((float)ads.readADC_SingleEnded(2)) * 3.0606);
+  Serial.print(" V, Current Sense: ");
+  Serial.print((((float)ads.readADC_SingleEnded(3)) * 3.0606 - 2.5) * 10);
+  Serial.println(" A");
 
   //  SSC
   Serial.print("SSC update: ");
